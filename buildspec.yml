@@ -1,0 +1,27 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Installig phase
+
+  pre_build:
+    commands:
+      - echo Pre build phase
+
+  build:
+    commands:
+      - echo Building phase
+      - echo "This is build phase... Zipping my lambda function"
+      - zip -r deployment_package.zip lambda.js
+
+  post_build:
+    commands:
+      - echo Post build phase
+      - echo "Deploying to the Lambda"
+      - aws lambda update-function-code --function-name  aws-cicd-serverless --zip-file fileb://deployment_package.zip
+
+artifacts:
+  type: zip
+  paths:
+    - '*'
